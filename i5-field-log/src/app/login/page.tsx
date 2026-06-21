@@ -28,6 +28,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex">
+      {/* Left: brand panel */}
       <div className="hidden lg:flex flex-col justify-between w-1/2 bg-brand px-12 py-16">
         <img
           src="https://s3.amazonaws.com/hoth.bizango/images/1322152/logo_full-dark_home.png"
@@ -41,11 +42,13 @@ export default function LoginPage() {
             <span className="font-semibold">Elevating Performance.</span>
           </h2>
         </div>
-        <p className="text-white/25 text-xs">&copy; {new Date().getFullYear()} I-5 Design Build</p>
+        <p className="text-white/25 text-xs">© {new Date().getFullYear()} I-5 Design Build</p>
       </div>
 
+      {/* Right: login form */}
       <div className="flex-1 flex items-center justify-center bg-slate-100 px-6 py-12">
         <div className="w-full max-w-sm">
+          {/* Mobile logo */}
           <div className="lg:hidden text-center mb-8">
             <img
               src="https://s3.amazonaws.com/hoth.bizango/images/1322152/logo_full-dark_home.png"
@@ -94,7 +97,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-accent hover:bg-accent-dark text-white rounded-lg py-2.5 font-semibold text-sm disabled:opacity-50 transition-colors shadow-sm"
+                  className="w-full bg-accent hover:bg-accent-dark text-gray-900 rounded-lg py-2.5 font-semibold text-sm disabled:opacity-50 transition-colors shadow-sm"
                 >
                   {loading ? 'Sending…' : 'Send Sign-in Link'}
                 </button>

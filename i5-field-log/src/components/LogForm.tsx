@@ -72,6 +72,7 @@ export function LogForm({ projects, userId }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
+      {/* Live preview */}
       {men > 0 && hours > 0 && points > 0 && (
         <div className="bg-brand/5 border border-brand/10 rounded-xl p-4 grid grid-cols-3 gap-2 text-center">
           <div>
@@ -92,14 +93,23 @@ export function LogForm({ projects, userId }: Props) {
       <div className="space-y-4">
         <div>
           <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Date</label>
-          <input type="date" required value={form.entry_date} onChange={e => set('entry_date', e.target.value)}
-            className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition" />
+          <input
+            type="date"
+            required
+            value={form.entry_date}
+            onChange={e => set('entry_date', e.target.value)}
+            className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition"
+          />
         </div>
 
         <div>
           <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Project</label>
-          <select required value={form.project_id} onChange={e => set('project_id', e.target.value)}
-            className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition">
+          <select
+            required
+            value={form.project_id}
+            onChange={e => set('project_id', e.target.value)}
+            className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition"
+          >
             <option value="">Select project…</option>
             {projects.map(p => (
               <option key={p.id} value={p.id}>{p.name}</option>
@@ -108,16 +118,23 @@ export function LogForm({ projects, userId }: Props) {
         </div>
 
         <div className="grid grid-cols-3 gap-3">
-          {([
+          {[
             { key: 'men', label: 'Men', min: '1', step: '1', placeholder: '6' },
             { key: 'hours', label: 'Hours', min: '0.5', step: '0.5', placeholder: '9' },
             { key: 'points', label: 'Points', min: '0', step: '0.1', placeholder: '42' },
-          ] as const).map(({ key, label, min, step, placeholder }) => (
+          ].map(({ key, label, min, step, placeholder }) => (
             <div key={key}>
               <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">{label}</label>
-              <input type="number" required min={min} step={step}
-                value={form[key]} onChange={e => set(key, e.target.value)} placeholder={placeholder}
-                className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition" />
+              <input
+                type="number"
+                required
+                min={min}
+                step={step}
+                value={form[key as keyof typeof form]}
+                onChange={e => set(key, e.target.value)}
+                placeholder={placeholder}
+                className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition"
+              />
             </div>
           ))}
         </div>
@@ -126,17 +143,30 @@ export function LogForm({ projects, userId }: Props) {
           <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">
             Notes <span className="font-normal normal-case tracking-normal">(optional)</span>
           </label>
-          <textarea rows={2} value={form.notes} onChange={e => set('notes', e.target.value)}
+          <textarea
+            rows={2}
+            value={form.notes}
+            onChange={e => set('notes', e.target.value)}
             placeholder="Any notes for the day…"
-            className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition" />
+            className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition"
+          />
         </div>
       </div>
 
-      {error && <p className="text-red-600 text-sm bg-red-50 border border-red-100 rounded-lg px-3 py-2">{error}</p>}
-      {success && <p className="text-green-700 text-sm font-semibold bg-green-50 border border-green-100 rounded-lg px-3 py-2">✓ Entry logged successfully</p>}
+      {error && (
+        <p className="text-red-600 text-sm bg-red-50 border border-red-100 rounded-lg px-3 py-2">{error}</p>
+      )}
+      {success && (
+        <p className="text-green-700 text-sm font-semibold bg-green-50 border border-green-100 rounded-lg px-3 py-2">
+          ✓ Entry logged successfully
+        </p>
+      )}
 
-      <button type="submit" disabled={loading}
-        className="w-full bg-accent hover:bg-accent-dark text-white rounded-lg py-2.5 font-semibold text-sm disabled:opacity-50 transition-colors shadow-sm">
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full bg-accent hover:bg-accent-dark text-gray-900 rounded-lg py-2.5 font-semibold text-sm disabled:opacity-50 transition-colors shadow-sm"
+      >
         {loading ? 'Saving…' : 'Log Day'}
       </button>
     </form>

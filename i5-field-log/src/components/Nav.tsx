@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useState, useEffect } from 'react'
@@ -45,6 +46,7 @@ export function Nav() {
   return (
     <nav className="bg-brand shadow-lg border-b border-brand-dark">
       <div className="max-w-5xl mx-auto px-4 flex items-center justify-between h-16">
+        {/* Logo */}
         <Link href="/dashboard" className="flex items-center gap-3 shrink-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -57,6 +59,7 @@ export function Nav() {
           </span>
         </Link>
 
+        {/* Desktop nav */}
         <div className="hidden sm:flex items-center gap-0.5">
           {allLinks.map(l => (
             <Link
@@ -64,14 +67,18 @@ export function Nav() {
               href={l.href}
               className={`px-3.5 py-2 rounded-lg text-sm font-medium tracking-wide transition-all ${
                 pathname.startsWith(l.href)
-                  ? 'bg-accent text-white shadow-sm'
+                  ? 'bg-accent text-gray-900 shadow-sm'
                   : 'text-white/65 hover:text-white hover:bg-white/10'
               }`}
             >
               {l.label}
             </Link>
           ))}
+
+          {/* Divider */}
           <div className="w-px h-5 bg-white/20 mx-2" />
+
+          {/* User info + sign out */}
           <div className="flex items-center gap-2">
             {profile && (
               <span className="text-xs text-white/40 hidden lg:block">
@@ -87,6 +94,7 @@ export function Nav() {
           </div>
         </div>
 
+        {/* Mobile hamburger */}
         <button
           onClick={() => setMenuOpen(o => !o)}
           className="sm:hidden text-white/70 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition"
@@ -101,6 +109,7 @@ export function Nav() {
         </button>
       </div>
 
+      {/* Mobile menu */}
       {menuOpen && (
         <div className="sm:hidden bg-brand-dark border-t border-white/10 px-4 py-3 space-y-1">
           {allLinks.map(l => (
@@ -110,7 +119,7 @@ export function Nav() {
               onClick={() => setMenuOpen(false)}
               className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition ${
                 pathname.startsWith(l.href)
-                  ? 'bg-accent text-white'
+                  ? 'bg-accent text-gray-900'
                   : 'text-white/70 hover:text-white hover:bg-white/10'
               }`}
             >
