@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import type { Project } from '@/lib/types'
 
 interface Props {
@@ -24,31 +24,35 @@ export function DashboardFilters({ projects, currentProject, currentStart, curre
     router.push(`/dashboard?${params.toString()}`)
   }
 
+  const inputClass = "border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition"
+
   return (
-    <div className="flex flex-wrap gap-3 bg-white rounded-xl shadow-sm p-3">
+    <div className="flex flex-wrap gap-2.5 bg-white rounded-xl shadow-sm border border-gray-100 px-4 py-3 items-center">
       <select
         value={currentProject ?? ''}
         onChange={e => update('project', e.target.value)}
-        className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm flex-1 min-w-[140px]"
+        className={`${inputClass} flex-1 min-w-[160px]`}
       >
         <option value="">All projects</option>
         {projects.map(p => (
           <option key={p.id} value={p.id}>{p.name}</option>
         ))}
       </select>
-      <input
-        type="date"
-        value={currentStart}
-        onChange={e => update('start', e.target.value)}
-        className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm"
-      />
-      <span className="self-center text-gray-400 text-sm">to</span>
-      <input
-        type="date"
-        value={currentEnd}
-        onChange={e => update('end', e.target.value)}
-        className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm"
-      />
+      <div className="flex items-center gap-2 shrink-0">
+        <input
+          type="date"
+          value={currentStart}
+          onChange={e => update('start', e.target.value)}
+          className={inputClass}
+        />
+        <span className="text-gray-300 font-light select-none">—</span>
+        <input
+          type="date"
+          value={currentEnd}
+          onChange={e => update('end', e.target.value)}
+          className={inputClass}
+        />
+      </div>
     </div>
   )
 }
