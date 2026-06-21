@@ -5,15 +5,15 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          DEFAULT: '#224778',
-          dark:    '#1a3860',
-          light:   '#2d5f9e',
-          muted:   '#3a5f8a',
+          DEFAULT: '#1a1a1a',   // near-black nav
+          dark:    '#111111',
+          light:   '#2d2d2d',
+          muted:   '#3a3a3a',
         },
         accent: {
-          DEFAULT: '#871e5e',
-          dark:    '#6b1749',
-          light:   '#a32572',
+          DEFAULT: '#F5C518',   // I-5 yellow
+          dark:    '#D4A900',
+          light:   '#F8D44A',
         },
       },
       fontFamily: {
