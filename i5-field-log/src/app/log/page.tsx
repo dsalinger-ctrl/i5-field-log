@@ -14,8 +14,11 @@ export default async function LogPage() {
     .order('name')
 
   return (
-    <div className="max-w-lg mx-auto space-y-6">
-      <h1 className="text-xl font-bold text-gray-900">Log a Day</h1>
+    <div className="max-w-lg mx-auto space-y-5">
+      <div className="pt-1">
+        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Production</p>
+        <h1 className="text-2xl font-semibold text-gray-900">Log a Day</h1>
+      </div>
       <LogForm projects={projects ?? []} userId={user.id} />
     </div>
   )
