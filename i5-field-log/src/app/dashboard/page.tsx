@@ -18,14 +18,12 @@ export default async function DashboardPage({ searchParams }: Props) {
   const end = searchParams.end ?? weekRange.end
   const projectFilter = searchParams.project
 
-  // Fetch projects for filter dropdown
   const { data: projects } = await supabase
     .from('projects')
     .select('*')
     .eq('active', true)
     .order('name')
 
-  // Build entries query
   let q = supabase
     .from('log_entries')
     .select('*, project:projects(*), profile:profiles(email,full_name)')
@@ -38,7 +36,6 @@ export default async function DashboardPage({ searchParams }: Props) {
   const { data: entries } = await q
   const typedEntries = (entries ?? []) as unknown as LogEntry[]
 
-  // KPIs
   const totalPoints = typedEntries.reduce((s, e) => s + e.points, 0)
   const totalManHours = typedEntries.reduce((s, e) => s + e.man_hours, 0)
   const avgPPMPH = totalManHours > 0 ? totalPoints / totalManHours : 0
@@ -49,7 +46,6 @@ export default async function DashboardPage({ searchParams }: Props) {
   const selectedProject = projects?.find(p => p.id === projectFilter)
   const target = selectedProject?.target_ppmph ?? 0.65
 
-  // Chart data
   const chartData = typedEntries.map(e => ({
     date: e.entry_date,
     ppmph: Number(e.ppmph?.toFixed(3) ?? 0),
@@ -58,9 +54,12 @@ export default async function DashboardPage({ searchParams }: Props) {
   }))
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-gray-900">Dashboard</h1>
+    <div className="space-y-5">
+      <div className="flex items-center justify-between pt-1">
+        <div>
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Overview</p>
+          <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
+        </div>
       </div>
 
       <DashboardFilters
@@ -70,7 +69,6 @@ export default async function DashboardPage({ searchParams }: Props) {
         currentEnd={end}
       />
 
-      {/* KPI Cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <KPICard
           label="Avg PPMPH"
@@ -80,24 +78,23 @@ export default async function DashboardPage({ searchParams }: Props) {
         />
         <KPICard label="Total Points" value={totalPoints.toLocaleString()} />
         <KPICard label="Man-Hours" value={totalManHours.toLocaleString()} />
-        <KPICard label="Pts/Man-Day" value={formatPPMPH(pointsPerManDay)} />
+        <KPICard label="Pts / Man-Day" value={formatPPMPH(pointsPerManDay)} />
       </div>
 
-      {/* Charts */}
       {typedEntries.length > 0 ? (
         <div className="space-y-4">
-          <div className="bg-white rounded-xl shadow-sm p-4">
-            <h2 className="text-sm font-semibold text-gray-700 mb-3">PPMPH Over Time</h2>
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">PPMPH Over Time</p>
             <PPMPHChart data={chartData} target={target} />
           </div>
-          <div className="bg-white rounded-xl shadow-sm p-4">
-            <h2 className="text-sm font-semibold text-gray-700 mb-3">Points Per Day</h2>
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Points Per Day</p>
             <PointsBarChart data={chartData} />
           </div>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-sm p-8 text-center text-gray-400">
-          No entries in this date range.
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
+          <p className="text-gray-400 text-sm">No entries in this date range.</p>
         </div>
       )}
     </div>
