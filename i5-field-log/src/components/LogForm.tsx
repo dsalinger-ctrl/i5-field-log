@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { Project } from '@/lib/types'
-import { formatPPMPH, ppmphColor } from '@/lib/utils'
 
 interface Props {
   projects: Project[]
@@ -21,22 +20,11 @@ export function LogForm({ projects, userId }: Props) {
     project_id: projects[0]?.id ?? '',
     men: '',
     hours: '9',
-    points: '',
     notes: '',
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
-
-  const men = parseFloat(form.men) || 0
-  const hours = parseFloat(form.hours) || 0
-  const points = parseFloat(form.points) || 0
-  const manHours = men * hours
-  const ppmph = manHours > 0 ? points / manHours : 0
-  const ptsPerMan = men > 0 ? points / men : 0
-
-  const selectedProject = projects.find(p => p.id === form.project_id)
-  const target = selectedProject?.target_ppmph ?? 0.65
 
   function set(key: string, value: string) {
     setForm(f => ({ ...f, [key]: value }))
@@ -55,7 +43,7 @@ export function LogForm({ projects, userId }: Props) {
       project_id: form.project_id,
       men: parseInt(form.men),
       hours: parseFloat(form.hours),
-      points: parseFloat(form.points),
+      points: null,
       notes: form.notes || null,
       logged_by: userId,
     })
@@ -64,7 +52,7 @@ export function LogForm({ projects, userId }: Props) {
       setError(error.message)
     } else {
       setSuccess(true)
-      setForm(f => ({ ...f, men: '', points: '', notes: '' }))
+      setForm(f => ({ ...f, men: '', notes: '' }))
       router.refresh()
     }
     setLoading(false)
@@ -72,24 +60,6 @@ export function LogForm({ projects, userId }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
-      {/* Live preview */}
-      {men > 0 && hours > 0 && points > 0 && (
-        <div className="bg-brand/5 border border-brand/10 rounded-xl p-4 grid grid-cols-3 gap-2 text-center">
-          <div>
-            <div className={`text-xl font-bold ${ppmphColor(ppmph, target)}`}>{formatPPMPH(ppmph)}</div>
-            <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">PPMPH</div>
-          </div>
-          <div>
-            <div className="text-xl font-bold text-gray-700">{manHours.toFixed(1)}</div>
-            <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">Man-Hours</div>
-          </div>
-          <div>
-            <div className="text-xl font-bold text-gray-700">{formatPPMPH(ptsPerMan)}</div>
-            <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">Pts/Man</div>
-          </div>
-        </div>
-      )}
-
       <div className="space-y-4">
         <div>
           <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Date</label>
@@ -117,11 +87,10 @@ export function LogForm({ projects, userId }: Props) {
           </select>
         </div>
 
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-3">
           {[
             { key: 'men', label: 'Men', min: '1', step: '1', placeholder: '6' },
             { key: 'hours', label: 'Hours', min: '0.5', step: '0.5', placeholder: '9' },
-            { key: 'points', label: 'Points', min: '0', step: '0.1', placeholder: '42' },
           ].map(({ key, label, min, step, placeholder }) => (
             <div key={key}>
               <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">{label}</label>
