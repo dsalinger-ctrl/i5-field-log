@@ -17,6 +17,7 @@ const navLinks = [
 const adminLinks = [
   { href: '/admin/projects', label: 'Projects' },
   { href: '/admin/users', label: 'Users' },
+    { href: '/admin/points', label: 'Points' },
 ]
 
 export function Nav() {

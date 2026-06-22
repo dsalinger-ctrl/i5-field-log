@@ -20,7 +20,7 @@ export interface LogEntry {
   project_id: string
   men: number
   hours: number
-  points: number
+  points: number | null
   man_hours: number
   ppmph: number
   points_per_man: number
