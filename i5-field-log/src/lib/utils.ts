@@ -40,7 +40,7 @@ export function groupByProjectAndWeek(entries: LogEntry[]): ProjectRollup[] {
       })
     }
     const proj = map.get(key)!
-    proj.total_points += e.points
+    proj.total_points += (e.points ?? 0)
     proj.total_man_hours += e.man_hours
     proj.days += 1
 
@@ -50,7 +50,7 @@ export function groupByProjectAndWeek(entries: LogEntry[]): ProjectRollup[] {
       weekRow = { iso_week: isoWeek, total_points: 0, total_man_hours: 0, weighted_ppmph: 0, days: 0 }
       proj.weeks.push(weekRow)
     }
-    weekRow.total_points += e.points
+    weekRow.total_points += (e.points ?? 0)
     weekRow.total_man_hours += e.man_hours
     weekRow.days += 1
   }

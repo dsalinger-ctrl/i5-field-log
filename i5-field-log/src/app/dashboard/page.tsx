@@ -36,7 +36,7 @@ export default async function DashboardPage({ searchParams }: Props) {
   const { data: entries } = await q
   const typedEntries = (entries ?? []) as unknown as LogEntry[]
 
-  const totalPoints = typedEntries.reduce((s, e) => s + e.points, 0)
+  const totalPoints = typedEntries.reduce((s, e) => s + (e.points ?? 0), 0)
   const totalManHours = typedEntries.reduce((s, e) => s + e.man_hours, 0)
   const avgPPMPH = totalManHours > 0 ? totalPoints / totalManHours : 0
   const totalMen = typedEntries.reduce((s, e) => s + e.men, 0)
@@ -49,7 +49,7 @@ export default async function DashboardPage({ searchParams }: Props) {
   const chartData = typedEntries.map(e => ({
     date: e.entry_date,
     ppmph: Number(e.ppmph?.toFixed(3) ?? 0),
-    points: e.points,
+    points: e.points ?? 0,
     target,
   }))
 
